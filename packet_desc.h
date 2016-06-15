@@ -250,6 +250,19 @@ int pdesc_pool_clear(struct pdesc_pool * pool);
 
 /**
  *
+ * pdesc_pool_find - Find a packet descriptor with a specific ID.
+ *
+ * @pool : Packet descriptor pool pointer.
+ * @frame_id : Packet identifier.
+ *
+ * Return: A pointer to packet descriptor or NULL if not found.
+ *
+ */
+struct pdesc * pdesc_pool_find(struct pdesc_pool * pool, \
+	u16 frame_id);
+
+/**
+ *
  * pdesc_pool_free - Destroy a Packet descriptor pool.
  *
  * @pool: A Packet descriptor pool pointer.

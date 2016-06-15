@@ -203,6 +203,28 @@ int pdesc_pool_clear(struct pdesc_pool * pool)
 	return r;
 }
 
+struct pdesc * pdesc_pool_find(struct pdesc_pool * pool, \
+	u16 frame_id)
+{
+	struct list_head *p;
+	struct pdesc *pd;
+	int found = 0;
+	
+	list_for_each(p,&pool->list_pdesc) {
+		pd = list_entry(p, struct pdesc, node);
+		
+		if(pd->id == frame_id) {
+			found = 1;
+			break;
+		}
+	}
+	
+	if(!found)
+		pd = NULL;
+		
+	return pd;
+}
+
 void pdesc_pool_free(struct pdesc_pool * pool)
 {
 	if(pool != NULL)
