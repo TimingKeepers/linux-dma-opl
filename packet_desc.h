@@ -22,6 +22,19 @@
 #include "dma_op.h"
 
 /**
+ * 
+ * Packet descriptor type.
+ * 
+ * @PDESC_RX: RX packet descriptor.
+ * @PDESC_TX: TX packet descriptor.
+ * 
+ */
+enum pdesc_type {
+	PDESC_RX = 0,
+	PDESC_TX = 1
+};
+
+/**
  *
  * Packet descriptor structure. It stores all the
  * information related with a packet transaction.
@@ -35,6 +48,9 @@ struct pdesc {
 
 	/* DMA Stuff */
 	struct dma_op * dma_op;
+	
+	/* Packet descriptor type */
+	enum pdesc_type pdesc_t;
 
 	/* Packet ID */
 	u16 id;
@@ -47,16 +63,74 @@ struct pdesc {
  *
  * pdesc_create - Create a new Packet descriptor.
  *
+ * @dma_chan: DMAengine channel.
  * @block: Data block pointer.
- * @dma_op: DMA Operation structure pointer.
- * id: Packet ID.
+ * @pdesc_t: Packet descriptor type.
+ * @id: Packet ID.
+ * @dev: HW device.
  * @gfp: Specific flags to request memory.
  *
  * Return: A Packet descriptor.
  *
  */
-struct pdesc * pdesc_create(struct dma_block * block, \
-		struct dma_op * dma_op, u16 id, gfp_t gfp);
+struct pdesc * pdesc_create(struct dma_chan *dma_chan, \
+	struct dma_block * block, enum pdesc_type pdesc_t, \
+	u16 id, struct device *dev, gfp_t gfp);
+		
+/**
+ *
+ * pdesc_tx_create - Create a new Tx Packet descriptor.
+ *
+ * @dma_chan: DMAengine channel.
+ * @block: Data block pointer.
+ * @id: Packet ID.
+ * @dev: HW device.
+ * @gfp: Specific flags to request memory.
+ *
+ * Return: A Tx Packet descriptor.
+ *
+ */
+struct pdesc * pdesc_tx_create(struct dma_chan *dma_chan, \
+	struct dma_block * block, u16 id, struct device *dev,  \
+	gfp_t gfp);
+	
+/**
+ *
+ * pdesc_rx_create - Create a new Rx Packet descriptor.
+ *
+ * @dma_chan: DMAengine channel.
+ * @block: Data block pointer.
+ * @id: Packet ID.
+ * @dev: HW device.
+ * @gfp: Specific flags to request memory.
+ *
+ * Return: A Rx Packet descriptor.
+ *
+ */
+struct pdesc * pdesc_rx_create(struct dma_chan *dma_chan, \
+	struct dma_block * block, u16 id, struct device *dev, \
+	gfp_t gfp);
+
+/**
+ *
+ * pdesc_xfer_prep - Preprare the Packet descritor transfer.
+ *
+ * @desc: A Packet descriptor pointer.
+ * @dma_cb_f: DMA callback function.
+ * @dma_cb_param: DMA callback param.
+ * @flags: DMA flags.
+ * @context: Private pointer for the DMA driver.
+ * @gfp: Specific flags to request memory.
+ *
+ * Return: 0 if success and an error code otherwise.
+ *
+ */
+int pdesc_xfer_prep(struct pdesc *desc, \
+	void (*dma_cb_f)(void * param), \
+	void * dma_cb_param, \
+	unsigned long flags, \
+	void * context, \
+	gfp_t gfp);
 
 /**
  *
