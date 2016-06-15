@@ -89,7 +89,7 @@ int pdesc_xfer_start(struct pdesc * desc)
 	return dma_op_start(desc->dma_op);
 }
 
-static void pdesc_tstamp_set(struct pdesc * desc, \
+void pdesc_tstamp_set(struct pdesc * desc, \
 	struct timespec ts)
 {
 	struct skb_shared_hwtstamps *hwts;

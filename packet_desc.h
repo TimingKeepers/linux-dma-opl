@@ -143,6 +143,17 @@ int pdesc_xfer_prep(struct pdesc *desc, \
  */
 int pdesc_xfer_start(struct pdesc * desc);
 
+/**
+ * 
+ * pdesc_tstamp_set - Store the timestamp with the sk_buff kernel
+ * structure associated to the packet descriptor.
+ * 
+ * @desc: A Packet descriptor pointer.
+ * @ts: Packet timestamp.
+ * 
+ */
+void pdesc_tstamp_set(struct pdesc * desc, \
+	struct timespec ts);
 
 /**
  *
@@ -151,7 +162,7 @@ int pdesc_xfer_start(struct pdesc * desc);
  *
  * @desc: A Packet descriptor pointer.
  * @skb: A networking layer structure pointer.
- * @ts: Packet timestamping if any.
+ * @ts: Packet timestamp if any.
  *
  */
 void pdesc_copy_from(struct pdesc * desc, \
@@ -164,7 +175,7 @@ void pdesc_copy_from(struct pdesc * desc, \
  *
  * @desc: A Packet descriptor pointer.
  * @skb: A networking layer structure pointer.
- * @ts: Packet timestamping if any.
+ * @ts: Packet timestamp if any.
  *
  */
 void pdesc_copy_to(struct pdesc * desc, \
